@@ -1,8 +1,11 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.health import router as health_router
 from app.api.routes.improve import router as improve_router
+
+load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI(
     title="PromptSense API",

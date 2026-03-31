@@ -1,15 +1,20 @@
 function ExplanationCard({ explanation, promptType }) {
+  const formattedType = promptType
+    ? promptType
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+    : "Unknown";
+
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md space-y-3">
       <div>
-        <h2 className="text-lg font-semibold text-slate-800">
-          Why This Is Better
-        </h2>
-        <p className="text-xs uppercase tracking-wide text-slate-500 mt-1">
-          Detected type: {promptType}
+        <h2 className="text-lg font-semibold text-slate-800">Why This Works</h2>
+        <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">
+          Detected type: {formattedType}
         </p>
       </div>
-      <p className="text-sm text-slate-700">{explanation}</p>
+
+      <p className="text-sm leading-6 text-slate-700">{explanation}</p>
     </div>
   );
 }
