@@ -18,4 +18,5 @@ class PromptImproveResponse(BaseModel):
     confidence_score: float
     expected_output_preview: str
     reasoning_mode: str
+    used_context_sources: List[str]
     variants: List[PromptVariant]

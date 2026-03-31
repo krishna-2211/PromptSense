@@ -1,12 +1,14 @@
-from app.schemas.prompt_request import PromptImproveRequest
-from app.schemas.prompt_response import PromptImproveResponse, PromptVariant
-from app.services.prompt_improver import PromptImprover
-from app.services.explanation_service import ExplanationService
-from app.services.variant_generator import VariantGenerator
-from app.services.output_preview_service import OutputPreviewService
-from app.services.llm_prompt_refiner import LLMPromptRefiner
+from app.mcp.adapters.file_context_adapter import FileContextAdapter
+from app.mcp.adapters.web_context_adapter import WebContextAdapter
 from app.prompt_engine.classifier import classify_prompt_type
 from app.prompt_engine.context_detector import detect_missing_pieces, extract_hidden_goal
+from app.schemas.prompt_request import PromptImproveRequest
+from app.schemas.prompt_response import PromptImproveResponse, PromptVariant
+from app.services.explanation_service import ExplanationService
+from app.services.llm_prompt_refiner import LLMPromptRefiner
+from app.services.output_preview_service import OutputPreviewService
+from app.services.prompt_improver import PromptImprover
+from app.services.variant_generator import VariantGenerator
 
 
 class PromptOrchestrator:
@@ -17,10 +19,48 @@ class PromptOrchestrator:
         self.preview_service = OutputPreviewService()
         self.llm_refiner = LLMPromptRefiner()
 
+        self.file_context_adapter = FileContextAdapter()
+        self.web_context_adapter = WebContextAdapter()
+
     def improve_prompt(self, payload: PromptImproveRequest) -> PromptImproveResponse:
         prompt = payload.original_prompt.strip()
         if not prompt:
             raise ValueError("Prompt cannot be empty.")
+
+        used_context_sources: list[str] = []
+
+        resolved_file_context = payload.file_context
+        resolved_web_context = None
+
+        if payload.file_id:
+            try:
+                resolved_file_context = self.file_context_adapter.get_context(payload.file_id)
+                if resolved_file_context:
+                    used_context_sources.append("file")
+            except Exception as exc:
+                print("File MCP failed:", str(exc))
+                resolved_file_context = None
+
+        if payload.web_url:
+            try:
+                resolved_web_context = self.web_context_adapter.get_context(payload.web_url)
+                if resolved_web_context:
+                    used_context_sources.append("web")
+            except Exception as exc:
+                print("Playwright MCP failed:", str(exc))
+                resolved_web_context = None
+
+        combined_context_parts: list[str] = []
+
+        if payload.additional_context:
+            combined_context_parts.append(payload.additional_context.strip())
+
+        if resolved_web_context:
+            combined_context_parts.append(resolved_web_context[:2500])
+
+        combined_additional_context = (
+            "\n\n".join(combined_context_parts) if combined_context_parts else None
+        )
 
         initial_prompt_type = classify_prompt_type(prompt)
         initial_hidden_goal = extract_hidden_goal(prompt, initial_prompt_type)
@@ -30,8 +70,8 @@ class PromptOrchestrator:
             prompt_type=initial_prompt_type,
             audience=payload.audience,
             output_style=payload.output_style,
-            additional_context=payload.additional_context,
-            file_context=payload.file_context,
+            additional_context=combined_additional_context,
+            file_context=resolved_file_context,
         )
 
         reasoning_mode = "rule-based"
@@ -42,11 +82,9 @@ class PromptOrchestrator:
             missing_pieces=missing_pieces,
             audience=payload.audience or "general",
             output_style=payload.output_style or "structured",
-            additional_context=payload.additional_context,
-            file_context=payload.file_context,
+            additional_context=combined_additional_context,
+            file_context=resolved_file_context,
         )
-
-        print("LLM RESULT:", llm_result)
 
         refined_prompt_type = llm_result.get("prompt_type") or initial_prompt_type
         refined_hidden_goal = llm_result.get("hidden_goal") or initial_hidden_goal
@@ -65,8 +103,8 @@ class PromptOrchestrator:
             missing_pieces=missing_pieces,
             audience=payload.audience or "general",
             output_style=payload.output_style or "structured",
-            additional_context=payload.additional_context,
-            file_context=payload.file_context,
+            additional_context=combined_additional_context,
+            file_context=resolved_file_context,
         )
 
         explanation = self.explainer.generate_explanation(
@@ -80,9 +118,9 @@ class PromptOrchestrator:
         )
 
         score = 0.6
-        if payload.additional_context:
+        if combined_additional_context:
             score += 0.1
-        if payload.file_context:
+        if resolved_file_context:
             score += 0.1
         if len(prompt.split()) > 5:
             score += 0.1
@@ -94,8 +132,6 @@ class PromptOrchestrator:
             refined_prompt_type
         )
 
-        print("REASONING MODE:", reasoning_mode)
-
         return PromptImproveResponse(
             original_prompt=prompt,
             prompt_type=refined_prompt_type,
@@ -106,5 +142,6 @@ class PromptOrchestrator:
             confidence_score=round(score, 2),
             expected_output_preview=expected_output_preview,
             reasoning_mode=reasoning_mode,
+            used_context_sources=used_context_sources,
             variants=[PromptVariant(**variant) for variant in variants],
         )

@@ -1,7 +1,4 @@
 import asyncio
-import os
-import sys
-from pathlib import Path
 from typing import Any
 
 from mcp import ClientSession, StdioServerParameters
@@ -9,63 +6,54 @@ from mcp.client.stdio import stdio_client
 
 
 class MCPClientError(Exception):
-    """Raised when MCP client communication fails."""
+    pass
 
 
-class PromptSenseMCPClient:
-    def __init__(self) -> None:
-        project_root = Path(__file__).resolve().parents[3]
-        server_path = project_root / "mcp_server" / "server.py"
+class BaseMCPClient:
+    def __init__(self, command: str, args: list[str], env: dict[str, str] | None = None) -> None:
+        self.command = command
+        self.args = args
+        self.env = env or {}
 
-        if not server_path.exists():
-            raise FileNotFoundError(f"MCP server not found at: {server_path}")
-
-        self.server_params = StdioServerParameters(
-            command=sys.executable,
-            args=[str(server_path)],
-            env=os.environ.copy(),
+    async def _call_tool_async(self, tool_name: str, arguments: dict[str, Any]) -> Any:
+        server_params = StdioServerParameters(
+            command=self.command,
+            args=self.args,
+            env=self.env,
         )
 
-    async def _call_tool_async(self, tool_name: str, input_data: dict[str, Any]) -> dict[str, Any]:
+        async with stdio_client(server_params) as (read_stream, write_stream):
+            async with ClientSession(read_stream, write_stream) as session:
+                await session.initialize()
+
+                tools_result = await session.list_tools()
+                available_tool_names = [tool.name for tool in tools_result.tools]
+
+                if tool_name not in available_tool_names:
+                    raise MCPClientError(
+                        f"Tool '{tool_name}' not found. Available tools: {available_tool_names}"
+                    )
+
+                result = await session.call_tool(tool_name, arguments)
+
+                # MCP tool results are often returned as structured content blocks.
+                # We normalize the common patterns here.
+                if hasattr(result, "content") and result.content:
+                    parts: list[str] = []
+
+                    for item in result.content:
+                        # Most common case: text content
+                        text = getattr(item, "text", None)
+                        if text:
+                            parts.append(text)
+
+                    if parts:
+                        return "\n".join(parts)
+
+                return result
+
+    def call_tool(self, tool_name: str, arguments: dict[str, Any]) -> Any:
         try:
-            async with stdio_client(self.server_params) as (read_stream, write_stream):
-                async with ClientSession(read_stream, write_stream) as session:
-                    await session.initialize()
-
-                    result = await session.call_tool(tool_name, {"input_data": input_data})
-
-                    if not result.content:
-                        raise MCPClientError(f"No content returned from tool: {tool_name}")
-
-                    first_content = result.content[0]
-
-                    # FastMCP typically returns structured text content.
-                    # We expect the tool result to be serialized JSON-like text or direct data.
-                    if hasattr(first_content, "text"):
-                        import json
-
-                        text = first_content.text.strip()
-
-                        try:
-                            return json.loads(text)
-                        except json.JSONDecodeError:
-                            # fallback: try python-like dict string if needed
-                            import ast
-
-                            try:
-                                parsed = ast.literal_eval(text)
-                                if isinstance(parsed, dict):
-                                    return parsed
-                            except Exception:
-                                pass
-
-                            raise MCPClientError(
-                                f"Tool '{tool_name}' returned non-JSON text: {text}"
-                            )
-
-                    raise MCPClientError(f"Unsupported content type returned from tool: {tool_name}")
+            return asyncio.run(self._call_tool_async(tool_name, arguments))
         except Exception as exc:
-            raise MCPClientError(f"Failed to call MCP tool '{tool_name}': {exc}") from exc
-
-    def call_tool(self, tool_name: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        return asyncio.run(self._call_tool_async(tool_name, input_data))
+            raise MCPClientError(str(exc)) from exc
