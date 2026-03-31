@@ -1,0 +1,198 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - link "Skip to main content" [ref=e9] [cursor=pointer]:
+        - /url: "#main_content"
+        - generic [ref=e10]: Skip to main content
+      - banner [ref=e11]:
+        - generic [ref=e15]:
+          - link "Expedia logo" [ref=e16] [cursor=pointer]:
+            - /url: https://www.expedia.com/
+            - img "Expedia logo" [ref=e17]
+          - button "Shop travel" [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]: Shop travel
+            - img "Shop travel" [ref=e24]
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - button "USD United States" [ref=e28] [cursor=pointer]:
+                - generic [ref=e29]: USD
+                - img "United States" [ref=e30]
+            - listitem [ref=e31]:
+              - link "List your property" [ref=e32] [cursor=pointer]:
+                - /url: https://apps.expediapartnercentral.com/en_US/list?utm_medium=referral&utm_source=wwwexpediacom-en_US&utm_campaign=Brand.DTI&utm_contentewd=pwa-header-btn&siteId=1&tpid=1&eapid=0&langId=1033&utm_term=Brand.DTI&lasttouchMktgcode=Brand.DTI
+            - listitem [ref=e33]:
+              - link "Support" [ref=e34] [cursor=pointer]:
+                - /url: /helpcenter/
+            - listitem [ref=e35]:
+              - link "Trips" [ref=e36] [cursor=pointer]:
+                - /url: /trips
+            - listitem [ref=e37]:
+              - link "Communication Center" [ref=e38] [cursor=pointer]:
+                - /url: /inbox/notifications
+                - img "Communication Center" [ref=e40]
+            - listitem [ref=e43]:
+              - generic [ref=e44]:
+                - button "Sign in" [expanded] [ref=e47] [cursor=pointer]
+                - generic [ref=e49]:
+                  - generic [ref=e51]: Unlock instant savings with Member Prices
+                  - list [ref=e52]:
+                    - listitem [ref=e53]:
+                      - link "Sign in" [ref=e55] [cursor=pointer]:
+                        - /url: /login?&uurl=e3id%3Dredr%26rurl%3D%2F
+                    - listitem [ref=e56]:
+                      - link "Learn more about One Key" [ref=e57] [cursor=pointer]:
+                        - /url: /welcome-one-key
+                  - separator [ref=e58]
+                  - list [ref=e59]:
+                    - listitem [ref=e60]:
+                      - link "Feedback" [ref=e62] [cursor=pointer]:
+                        - /url: /p/info-other/feedback.htm
+                        - generic [ref=e63]: Feedback
+    - main [ref=e66]:
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - figure [ref=e70]
+            - generic [ref=e73]:
+              - heading "The one place you go to go places" [level=1] [ref=e74]:
+                - generic [ref=e75]: The one place you go to go places
+              - generic [ref=e82]:
+                - tablist [ref=e84]:
+                  - tab "Stays" [selected] [ref=e85] [cursor=pointer]:
+                    - generic [ref=e87]: Stays
+                  - tab "Flights" [ref=e88] [cursor=pointer]:
+                    - generic [ref=e90]: Flights
+                  - tab "Cars" [ref=e91] [cursor=pointer]:
+                    - generic [ref=e93]: Cars
+                  - tab "Packages" [ref=e94] [cursor=pointer]:
+                    - generic [ref=e96]: Packages
+                  - tab "Things to do" [ref=e97] [cursor=pointer]:
+                    - generic [ref=e99]: Things to do
+                  - tab "Cruises" [ref=e100] [cursor=pointer]:
+                    - generic [ref=e102]: Cruises
+                  - listitem [ref=e103]
+                - generic [ref=e108]:
+                  - generic [ref=e112]:
+                    - generic: Where to?
+                    - button "Where to?" [ref=e113] [cursor=pointer]
+                    - img
+                  - generic [ref=e118]:
+                    - generic: Dates
+                    - button "Dates, Wed, Apr 1 - Sun, Apr 5" [ref=e119] [cursor=pointer]: Wed, Apr 1 - Sun, Apr 5
+                    - img
+                  - generic [ref=e121]:
+                    - generic: Travelers
+                    - button "Travelers, 2 travelers, 1 room" [ref=e122] [cursor=pointer]: 2 travelers, 1 room
+                    - img
+                  - generic [ref=e127]:
+                    - checkbox "Add a flight to Bundle & Save*" [ref=e128] [cursor=pointer]
+                    - paragraph [ref=e131] [cursor=pointer]: Add a flight to Bundle & Save*
+                  - button "Search" [ref=e132] [cursor=pointer]
+          - generic [ref=e142]:
+            - generic [ref=e145]:
+              - img [ref=e148]
+              - generic [ref=e152]: Last minute savings
+            - generic [ref=e155]: Plan a quick getaway this spring—find deals on stays and packages.
+            - link "Book now" [ref=e158] [cursor=pointer]:
+              - /url: https://www.expedia.com/deals/last-minute
+        - generic [ref=e163]:
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - heading "Last-minute weekend deals" [level=4] [ref=e167]
+              - generic [ref=e168]: Minimum 20% off deals for your next weekend getaway!
+            - link "See all deals" [ref=e170] [cursor=pointer]:
+              - /url: https://www.expedia.com/clp/XtvM6jr
+          - group "1 out of 1" [ref=e175]:
+            - generic [ref=e177]:
+              - generic [ref=e178]:
+                - generic [ref=e181]:
+                  - heading "Gallery Carousel" [level=3] [ref=e182]
+                  - generic [ref=e183]:
+                    - figure [ref=e185]:
+                      - img [ref=e187]
+                    - figure [ref=e189]:
+                      - img "Meeting facility" [ref=e191]
+                    - figure [ref=e193]:
+                      - img [ref=e195]
+                  - generic:
+                    - button "Show previous image" [ref=e196] [cursor=pointer]:
+                      - img "Show previous image" [ref=e197]
+                    - button "Show next image" [ref=e199] [cursor=pointer]:
+                      - img "Show next image" [ref=e200]
+                - generic [ref=e205]: VIP Access
+                - link "Save Sam's Town Hotel & Casino, Shreveport to a trip" [ref=e209] [cursor=pointer]:
+                  - img [ref=e210]
+                  - img [ref=e212]
+              - heading "Sam's Town Hotel & Casino, Shreveport" [level=6] [ref=e214]
+              - generic [ref=e215]: Shreveport
+              - generic [ref=e216]:
+                - generic [ref=e218]: "8.4"
+                - generic [ref=e219]: Very good
+                - generic [ref=e220]: (4,066 reviews)
+              - generic [ref=e221]:
+                - generic [ref=e222]:
+                  - img [ref=e223]
+                  - generic [ref=e225]: Member Price available
+                - generic [ref=e227]:
+                  - generic [ref=e231]: $197 nightly
+                  - generic [ref=e232]:
+                    - generic [ref=e234]:
+                      - generic [ref=e235]: The price is $485 total
+                      - generic [ref=e237]: $485 total
+                    - button "Price was $680, see more information about Standard Rate." [ref=e238] [cursor=pointer]:
+                      - generic [ref=e240]:
+                        - generic [ref=e241]: Price was $680, see more information about Standard Rate.
+                        - deletion [ref=e244]: $680
+                - generic [ref=e247]:
+                  - generic [ref=e248]: Total with taxes and fees
+                  - generic [ref=e251]:
+                    - img [ref=e252]
+                    - text: Total with taxes and fees
+              - link "Sam's Town Hotel & Casino, Shreveport" [ref=e254] [cursor=pointer]:
+                - /url: https://www.expedia.com/Shreveport-Hotels-Sams-Town-Hotel-And-Casino.h578395.Hotel-Information?startDate=2026-04-10&endDate=2026-04-12&guestRating=40
+                - generic [ref=e255]: Sam's Town Hotel & Casino, Shreveport
+        - generic [ref=e256]:
+          - generic [ref=e266]:
+            - generic [ref=e270]:
+              - generic [ref=e272]:
+                - heading "Bundle & Save" [level=2] [ref=e276]
+                - generic [ref=e281]: Save whether you book your trip all at once, or over time
+              - link "Get started" [ref=e284] [cursor=pointer]:
+                - /url: https://www.expedia.com/product/bundle-and-save/
+            - generic [ref=e288]:
+              - generic [ref=e290]:
+                - heading "One-stop travel shop" [level=2] [ref=e294]
+                - generic [ref=e299]: Book flights, hotels, homes, cars and more - all in one place
+              - link "Start planning" [ref=e302] [cursor=pointer]:
+                - /url: https://www.expedia.com/deals
+            - generic [ref=e306]:
+              - generic [ref=e308]:
+                - heading "One Key rewards" [level=2] [ref=e312]
+                - generic [ref=e317]: Earn OneKeyCash on every eligible booking to use toward your next trip
+              - link "Get rewarded" [ref=e320] [cursor=pointer]:
+                - /url: https://www.expedia.com/welcome-one-key?msockid=1a2cd48280c4626c32fec0a6817e63f0
+          - generic [ref=e328]:
+            - generic [ref=e339]:
+              - generic [ref=e342]: Featured
+              - heading "20%+ off last-minute escapes" [level=2] [ref=e346]
+              - generic [ref=e348]: Spring into action—Save 20% or more on select vacation homes.
+              - link "Book now" [ref=e353] [cursor=pointer]:
+                - /url: https://www.expedia.com/deals/last-minute#pid-H3ZzrKU
+            - generic [ref=e364]:
+              - generic [ref=e367]: Promotion
+              - heading "Book early and save 15% or more" [level=2] [ref=e371]
+              - generic [ref=e373]: Your next trip awaits. Unlock 15% or more on select hotels when you plan ahead.
+              - link "Book now" [ref=e378] [cursor=pointer]:
+                - /url: https://www.expedia.com/deals/early-booking
+  - generic [ref=e379]: Now showing Gallery Carousel, Sam's Town Hotel & Casino, Shreveport
+  - region "Cookie banner" [ref=e380]:
+    - alertdialog "Privacy" [ref=e381]:
+      - paragraph [ref=e386]:
+        - text: This site uses cookies and similar tracking technology. As disclosed in our Privacy Statement, we and our partners may collect personal information and other data. By continuing to use our website, you accept our
+        - link "Privacy Statement" [ref=e387] [cursor=pointer]:
+          - /url: /lp/b/lg-privacypolicy
+        - text: and
+        - link "Terms of Service" [ref=e388] [cursor=pointer]:
+          - /url: /lp/b/terms-of-service
+        - text: .
+      - button "Close" [ref=e390] [cursor=pointer]

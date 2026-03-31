@@ -59,6 +59,23 @@ class LLMPromptRefiner:
 
         return False
     
+    def _looks_like_meta_prompt(self, text: str) -> bool:
+        if not text:
+            return False
+
+        lowered = text.lower().strip()
+
+        bad_patterns = [
+            "generate a prompt",
+            "create a prompt",
+            "write a prompt",
+            "help craft a prompt",
+            "improve the prompt",
+            "optimize the prompt",
+        ]
+
+        return any(pattern in lowered for pattern in bad_patterns)
+    
     def refine(
         self,
         original_prompt: str,
@@ -137,6 +154,14 @@ Return ONLY valid JSON in this exact shape:
   ],
   "expected_output_preview": "string"
 }
+
+- The improved_prompt must be directly usable in ChatGPT/Claude/Gemini.
+- Do NOT say "generate a prompt", "write a prompt", or "create a prompt".
+- Do NOT describe the prompting process.
+- The improved_prompt must be the final instruction itself.
+
+For learning prompts, begin directly with words like:
+"Explain...", "Teach...", or "Describe..."
 """
 
         trimmed_file_context = file_context[:1200] if file_context else None
@@ -176,7 +201,7 @@ File context:
             )
 
             improved_prompt = result.get("improved_prompt")
-            if self._looks_like_final_output(improved_prompt or ""):
+            if self._looks_like_final_output(improved_prompt or "") or self._looks_like_meta_prompt(improved_prompt or ""):
                 improved_prompt = None
 
             preview = result.get("expected_output_preview")

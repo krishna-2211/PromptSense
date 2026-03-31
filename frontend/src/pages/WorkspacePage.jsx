@@ -4,13 +4,17 @@ import ImprovedPromptCard from "../components/output/ImprovedPromptCard";
 import MissingContextCard from "../components/output/MissingContextCard";
 import ExplanationCard from "../components/output/ExplanationCard";
 import PromptVariantsTabs from "../components/output/PromptVariantsTabs";
-import { improvePrompt } from "../services/api";
+import { improvePrompt, uploadFile } from "../services/api";
 
 function WorkspacePage() {
   const [prompt, setPrompt] = useState("");
   const [audience, setAudience] = useState("general");
   const [outputStyle, setOutputStyle] = useState("structured");
   const [additionalContext, setAdditionalContext] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileId, setUploadedFileId] = useState(null);
+  const [uploadedFilename, setUploadedFilename] = useState("");
+  const [webUrl, setWebUrl] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,13 +25,25 @@ function WorkspacePage() {
     setResult(null);
 
     try {
+      let fileId = uploadedFileId;
+
+      if (selectedFile && !fileId) {
+        const uploadResult = await uploadFile(selectedFile);
+        fileId = uploadResult.file_id;
+        setUploadedFileId(fileId);
+        setUploadedFilename(uploadResult.filename);
+      }
+
       const data = await improvePrompt({
         original_prompt: prompt,
         audience,
         output_style: outputStyle,
         additional_context: additionalContext || null,
         file_context: null,
+        file_id: fileId,
+        web_url: webUrl || null,
       });
+
       setResult(data);
     } catch (err) {
       setError(err.message || "Something went wrong");
@@ -35,6 +51,8 @@ function WorkspacePage() {
       setLoading(false);
     }
   };
+
+  const usedSources = result?.used_context_sources || [];
 
   return (
     <div className="relative min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.18),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(236,72,153,0.14),_transparent_28%),linear-gradient(to_bottom_right,#f8fafc,#eef2ff,#fdf2f8)] px-6 py-10">
@@ -159,6 +177,42 @@ function WorkspacePage() {
               />
             </div>
 
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">
+                  Upload File (optional)
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setSelectedFile(file);
+                    setUploadedFileId(null);
+                    setUploadedFilename(file?.name || "");
+                  }}
+                  className="w-full rounded-xl border border-slate-300 bg-white p-3 text-sm shadow-sm transition file:mr-4 file:rounded-full file:border-0 file:bg-indigo-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100"
+                />
+                {uploadedFilename && (
+                  <p className="text-xs text-slate-500">
+                    Selected file: <span className="font-medium">{uploadedFilename}</span>
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">
+                  Web URL (optional)
+                </label>
+                <input
+                  type="url"
+                  value={webUrl}
+                  onChange={(e) => setWebUrl(e.target.value)}
+                  placeholder="https://example.com/article-or-job-post"
+                  className="w-full rounded-xl border border-slate-300 bg-white p-3 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                />
+              </div>
+            </div>
+
             <button
               onClick={handleImprove}
               disabled={loading || !prompt.trim()}
@@ -181,6 +235,28 @@ function WorkspacePage() {
           <div className="space-y-5">
             {result ? (
               <>
+                {usedSources.length > 0 && (
+                  <div className="rounded-[24px] border border-white/60 bg-white/90 p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)] backdrop-blur">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                        Context Used
+                      </span>
+
+                      {usedSources.includes("file") && (
+                        <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100">
+                          📄 File Context
+                        </span>
+                      )}
+
+                      {usedSources.includes("web") && (
+                        <span className="rounded-full bg-fuchsia-50 px-3 py-1 text-xs font-semibold text-fuchsia-700 ring-1 ring-fuchsia-100">
+                          🌐 Web Context
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <ImprovedPromptCard
                   improvedPrompt={result.improved_prompt}
                   confidenceScore={result.confidence_score}

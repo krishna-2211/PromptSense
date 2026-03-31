@@ -1,0 +1,46 @@
+You can ask a wide variety of questions to help you digest, analyze, or act on the content of a web page. Since I can see the text and layout of the page you have open, I can help with everything from quick summaries to deep dives.
+
+Here are the main categories of questions you can ask:
+
+1. Summarization and Extraction
+"What are the 3 main takeaways from this article?"
+
+"Can you summarize this page in two sentences for a beginner?"
+
+"List all the dates and deadlines mentioned here."
+
+"What are the product specifications or pricing tiers?"
+
+2. Analysis and Comparison
+"What is the author's main argument, and what evidence do they use?"
+
+"Are there any biases or logical inconsistencies in this text?"
+
+"How does the product on this page compare to [Competitor Name]?"
+
+"Is the tone of this review generally positive or negative?"
+
+3. Navigation and Search
+"Where on this page does it mention the return policy?"
+
+"Does this site provide a contact email or phone number?"
+
+"Find the section that explains how to troubleshoot the 'Error 404' issue."
+
+4. Writing and Content Creation
+"Rewrite the second paragraph to be more professional."
+
+"Based on this page, draft a LinkedIn post sharing these insights."
+
+"Create five quiz questions based on this tutorial."
+
+5. Translation and Explanation
+"Explain the technical jargon used in the 'Specifications' section."
+
+"Translate the 'About Us' section into Spanish."
+
+"What does the term '[Specific Word]' mean in this specific context?"
+
+Tip: The more specific you are, the better. Instead of asking "What is this about?", try "What does this page say about the cost of subscription?"
+
+Would you like me to summarize the main purpose of the page you're currently looking at?
