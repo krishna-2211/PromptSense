@@ -37,25 +37,34 @@ function WorkspacePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 px-6 py-10">
+    <div className="relative min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.18),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(236,72,153,0.14),_transparent_28%),linear-gradient(to_bottom_right,#f8fafc,#eef2ff,#fdf2f8)] px-6 py-10">
+      <div className="pointer-events-none absolute left-10 top-10 h-40 w-40 rounded-full bg-indigo-300/20 blur-3xl" />
+      <div className="pointer-events-none absolute right-10 top-20 h-40 w-40 rounded-full bg-fuchsia-300/20 blur-3xl" />
+
       <div className="mx-auto max-w-7xl space-y-8">
-        <div className="space-y-3">
-          <div>
-            <h1 className="text-5xl font-bold tracking-tight text-slate-900">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-indigo-700 shadow-sm backdrop-blur">
+            ✨ LLM Instruction Optimizer
+          </div>
+
+          <div className="space-y-3">
+            <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl">
               PromptSense
             </h1>
-            <p className="mt-2 text-lg text-slate-600">
-              Turn vague ideas into high-performing LLM prompts.
+            <p className="max-w-2xl text-lg leading-8 text-slate-600">
+              Turn vague ideas into high-performing prompts with hybrid
+              intelligence, context-aware refinement, and polished LLM-ready
+              instructions.
             </p>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200">
             ⚡ Hybrid Intelligence Enabled
           </div>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1.05fr_1fr]">
-          <div className="space-y-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="space-y-5 rounded-[28px] border border-white/60 bg-white/80 p-6 shadow-[0_10px_40px_rgba(99,102,241,0.10)] backdrop-blur">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold text-slate-800">
                 Your Prompt
@@ -79,6 +88,7 @@ function WorkspacePage() {
                 }
               }}
             />
+
             <div className="space-y-2">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Try a sample
@@ -94,7 +104,7 @@ function WorkspacePage() {
                     key={sample}
                     type="button"
                     onClick={() => setPrompt(sample)}
-                    className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-200"
+                    className="rounded-full border border-white/70 bg-white/70 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
                   >
                     {sample}
                   </button>
@@ -152,10 +162,11 @@ function WorkspacePage() {
             <button
               onClick={handleImprove}
               disabled={loading || !prompt.trim()}
-              className="flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:scale-[1.01] hover:shadow-xl active:scale-[0.99] disabled:cursor-not-allowed disabled:from-slate-400 disabled:to-slate-400"
             >
               {loading ? "Thinking..." : "Improve Prompt"}
             </button>
+
             <p className="text-center text-xs text-slate-400">
               Press Ctrl + Enter to improve
             </p>
@@ -183,11 +194,11 @@ function WorkspacePage() {
                   promptType={result.prompt_type}
                 />
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+                <div className="rounded-[24px] border border-white/60 bg-white/90 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(99,102,241,0.14)] space-y-3">
                   <h2 className="text-lg font-semibold text-slate-800">
                     Expected Output Preview
                   </h2>
-                  <div className="rounded-xl bg-slate-50 p-4 text-sm whitespace-pre-wrap leading-6 text-slate-700">
+                  <div className="rounded-2xl border border-slate-200/70 bg-gradient-to-br from-slate-50 to-white p-4 text-sm whitespace-pre-wrap leading-7 text-slate-700">
                     {result.expected_output_preview}
                   </div>
                 </div>
@@ -195,15 +206,17 @@ function WorkspacePage() {
                 <PromptVariantsTabs variants={result.variants} />
               </>
             ) : (
-              <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
-                <div className="mx-auto max-w-md space-y-3">
-                  <div className="text-3xl">✨</div>
-                  <h3 className="text-lg font-semibold text-slate-700">
+              <div className="rounded-[28px] border border-dashed border-white/70 bg-white/70 p-10 text-center shadow-[0_12px_40px_rgba(15,23,42,0.05)] backdrop-blur">
+                <div className="mx-auto max-w-md space-y-4">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-3xl text-white shadow-lg shadow-indigo-200">
+                    ✨
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-800">
                     Optimized output will appear here
                   </h3>
-                  <p className="text-sm text-slate-500">
-                    Enter a vague prompt on the left, then let PromptSense turn
-                    it into a stronger LLM instruction.
+                  <p className="text-sm leading-6 text-slate-500">
+                    Enter a rough idea on the left and let PromptSense transform
+                    it into a stronger, more precise instruction for any LLM.
                   </p>
                 </div>
               </div>
