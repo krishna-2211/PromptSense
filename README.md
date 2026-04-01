@@ -164,6 +164,17 @@ Explain data science in a structured, beginner-friendly way. Cover its core conc
 
 # ⚠️ Troubleshooting
 
+### ❌ Error to start the mcp server
+
+```
+Received exception from stream: 1 validation error for JSONRPCMessage
+```
+
+✅ Solution: .\venv\Scripts\Activate.ps1 use this to activate the virtual environment for MCP instead of venv\Scripts\activate
+
+---
+
+
 ### ❌ Port already in use (Ollama)
 
 ```
