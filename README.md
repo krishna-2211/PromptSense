@@ -203,7 +203,3 @@ Error: listen tcp 127.0.0.1:11434
 
 * Happens with local models
 * fallback system will handle it
-
----
-
-Just say 👍
